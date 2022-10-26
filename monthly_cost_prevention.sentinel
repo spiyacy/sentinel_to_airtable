@@ -43,7 +43,9 @@ if(proposed_monthly_cost < total_cost){
 	cost = true
   	status = "Policy Success"
 	
-	if (speculative is false) {
+	if (tfrun.speculative) or (!tfrun.speculative and tfrun.refresh and tfrun.refresh_only) {
+		print("Speculative Run - Skipping Cost Reporting")
+	}else {
 		### Execute POST call to airtable
 		request = request.with_body(json.marshal({
 		    "records": [{
@@ -63,8 +65,9 @@ if(proposed_monthly_cost < total_cost){
   	print("POLICY FAILED: New monthly cost of workspace is beyond the limits of",total_cost, "set forth by the finance team.")
 	cost = false
 	status = "Policy Failed"
-  	
-	if (speculative is false) {
+  	if (tfrun.speculative) or (!tfrun.speculative and tfrun.refresh and tfrun.refresh_only) {
+		print("Speculative Run - Skipping Cost Reporting")
+	}else {
 		### Execute POST call to airtable
 		request = request.with_body(json.marshal({
 		    "records": [{
