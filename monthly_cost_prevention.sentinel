@@ -43,7 +43,7 @@ if(proposed_monthly_cost < total_cost){
 	cost = true
   	status = "Policy Success"
 	
-	if (tfrun.speculative) or (!tfrun.speculative and tfrun.refresh and tfrun.refresh_only) {
+	if (tfrun.speculative) or (!tfrun.speculative and tfrun.refresh and tfrun.refresh_only) ir (delta_monthly_cost == 0 and prior_monthly_cost == 0) {
 		print("Speculative Run - Skipping Cost Reporting")
 	}else {
 		### Execute POST call to airtable
